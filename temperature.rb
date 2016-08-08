@@ -21,11 +21,13 @@
 
 # Require loads a module or gem.
 require 'date'
-require 'Terminal-Table'
+require 'terminal-table'
 require './progressbar.rb'
 require 'paint'
+require 'rubygems'
+
 # Date::ABBR_DAYNAMES will provide us abbreviated Day Names.
-dayNames = Date::ABBR_DAYNAMES
+dayNames = Date::ABBR_DAYNAMES.reverse
 
 class Celsius
   def initialize(temperature)
@@ -63,24 +65,30 @@ class Day
     ObjectSpace.each_object(self).to_a
   end
 end
-#create an onject progressbar from the class ProgressBar
-progressbar = ProgressBar.new(1,dayNames.length)
+
 # For each Day ask the user for the temperature and Instantiate a Day with a
 # Celsuis object as the temperature attribute.
+bar1 = ProgressBar.new(0, dayNames.size)
+
 dayNames.each do |day|
-  progressbar.status
-  puts "Hi, what was the temperature on #{day}"
-  Day.new(day, Celsius.new(gets.chomp.to_i))
-  system "cls"
-  progressbar.advance
+   bar1.status
+   puts "Hi, what was the temperature on #{day}"
+   Day.new(day, Celsius.new(gets.chomp.to_i))
+   bar1.advance
+   system "cls"
 end
 
-# Output the data in an ugly table
-rows =[]
+
+table = Terminal::Table.new do |t|
+t.title = "Temperatures"
+t.headings = ["Days", "Centigrades", "Fahrenheit"]
+
 Day.all.each do |day|
   day.temperature>29 ? colourC = "\e[31m#{day.temperature}\e[0m" : colourC = "\e[34m#{day.temperature}\e[0m"
   day.temperature>29 ? colourF = "\e[31m#{day.temperature("fahrenheit")}\e[0m" : colourF = "\e[34m#{day.temperature("fahrenheit")}\e[0m"
-  rows<< [ day.name, colourC, colourF]
+  t << [day.name, colourC, colourF]
+  #t << [day.name, day.temperature>29 ? "\e[31m#{day.temperature}\e[0m" : "\e[34m#{day.temperature}\e[0m", day.temperature>29 ? "\e[31m#{day.temperature("fahrenheit")}\e[0m" : "\e[34m#{day.temperature("fahrenheit")}\e[0m"]
 end
-table = Terminal::Table.new :rows => rows
-puts table
+end
+
+print table

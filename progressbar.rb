@@ -13,11 +13,11 @@ class ProgressBar
     @progress = 0
   end
 
-  def increment
+  def advance
     @progress += 1
   end
 
-  def output
+  def status
     puts "#{@progress} / #{@finish}"
   end
 end
