@@ -9,19 +9,26 @@ class Customer
  attr_accessor :name, :account, :email, :address, :contact
 end
 
-def credit(input)
-  @input=input
-end
-class Bank_acc
+
+class Bankacc
   def initialize(balance)
     @balance = balance
   end
   attr_accessor :balance
 end
 
-nandini=Customer.new("nandini",Bank_acc.new(200),"nandini.r.nayak@gmail.com","248 North RD","470104234")
+nandini=Customer.new("nandini",Bankacc.new(200),"nandini.r.nayak@gmail.com","248 North RD","470104234")
 puts nandini.account.balance
-nandini.credit(10)
+
+
+
+
+
+
+
+
+
+
 # puts nandini.name
 #
 # while nandini.account.balance != 0

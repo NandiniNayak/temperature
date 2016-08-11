@@ -2,6 +2,7 @@ puts "what file do you want to read"
 filename = gets.chomp
 
 #a+ reads and write
+txt = File.open(filename)
 txt=open(filename, 'a+')
 
 puts " the file you opened was #{filename}"
