@@ -1,39 +1,34 @@
-class Customer
-  def initialize(name,account)
-    @name = name
-    
-attr_accessor :name, :account
+exit = false
+TXT = open("challenge2.txt",'a')
 
-def withdraw(withdraw)
-  @withdraw = withdraw
+def menu
+puts "Welcome!, Start Your Shopping Here"
+puts "\n"
+puts "1. Grocery"
+puts "2. Checkout"
+puts "3. Dairy"
+puts "4. Bakery"
+puts "5. Exit"
+puts "\n"
 end
-attr_accessor :withdraw
 
+until exit do
+  menu
+  command = gets.chomp.to_i
+
+     if command == 1
+        puts " what grocery you want to Find"
+        input =gets.chomp
+        TXT.rewind
+        items=TXT.read
+        if items.include?(input)
+          puts "item already exists"
+        else
+          TXT.write(input)
+          puts "item added to the list"
+        end
+
+     else
+       puts "Exit"
+   end
 end
-
-temp = Customer.new("Top", filename="volt-txt.rb")
-
-puts temp.name
-
-puts "What file do you want to read"
-txt = open(filename, 'r+')
-system "cls"
-
-puts "Your balance is "
-print txt.read
-txt.rewind
-balance = txt.read
-puts " withdraw $20"
-puts balance
-balance = (balance.to_i - 20)
-puts balance
-txt.rewind
-txt.close
-txt = open(filename,'a+')
-# File.truncate('volt.txt',0)
-txt.write(balance)
-
-
-txt.rewind
-
-txt.close

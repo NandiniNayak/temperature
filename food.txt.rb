@@ -1,0 +1,7 @@
+Dominos = Supplier.new("Dominos", "pizza",40, "23 fake st", "45693",11)
+Dominos = Supplier.new("Dominos", "Pizza",40, "34 fake st", "465748",12)
+BurgerKing = Supplier.new("Burger King", "Burger",20, "34 face st", "235437",13)
+HungryJacks = Supplier.new("HungryJacks", "Burger",20, "23 fake st", "4567",14)
+HungryJacks = Supplier.new("HungryJacks", "Rolls",30, "245 fake st", "4566",16)
+KamathKitchen = Supplier.new("KamathKitchen", "paneer mutter",30, "345 st", "35474",17)
+BurgerKing = Supplier.new("BurgerKing", "Burger",30, "23 fake st", "45354", 17)

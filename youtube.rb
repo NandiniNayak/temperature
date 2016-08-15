@@ -26,8 +26,6 @@ class Artist
  end
 end
 
-
-
 artist = Artist.new("Anderson Paak", "American", "hip-hop", Song.new(
 "The Bird", "Malibu", "4.08"))
 

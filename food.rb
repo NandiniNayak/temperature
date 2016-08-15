@@ -9,8 +9,10 @@
 # post image of the food items- gem
 # Terminal table to advertize the suppliers  - gem
 # logo - gem
-filename = 'food.txt'
-TXT = open(filename,'a+')
+require 'mail'
+# require 'net/smtp'
+require 'terminal-table'
+require 'catpix'
 class Supplier
   def initialize(name,food, quantity, address, contact, pickUpTime)
     @name = name
@@ -21,41 +23,62 @@ class Supplier
     @pickUpTime = pickUpTime
   end
 
-  attr_accessor :name,:food, :quantity, :address, :contact, :pickUpTime
+  attr_accessor :name,:food, :quantity, :address, :contact, :pickUpTime,:dbUpdate
 
-  def updateText
-    database = ["name","food","quantity","address","contact","pickuptime"]
-    databaseUpdate =[]
-    database.each do |data|
-      TXT.write(data)
-
-
+  def self.all
+    ObjectSpace.each_object(self).to_a
   end
 
   def supplierdetails
-    filename = 'food.txt'
-    txt = open(filename,'a+')
-    @food_quantity = Hash.new
-    puts "Hey #{@name} what food do you want to donate"
-    @food = gets.chomp.to_s
-    puts "How many #{@food}'s' would you like to donate"
-    @quantity = gets.chomp.to_i
-    @food_quantity[@food] = @quantity
-    puts "Enter your address"
-    @address = gets.chomp
-    puts "Enter contact details"
-    @contact = gets.chomp
-    puts "Enter pick up time"
-    @pickUpTime = gets.chomp
-    txt.write(@address)
+    @database = ["name","food","quantity","address","contact","pickuptime"]
+    @dbUpdate =[]
+    system "clear"
+    @database.each do |data|
+       puts "\e[33mPlease enter #{data}: \e[0m"
+       @dbUpdate << gets.chomp
+    end
+    filename = "food.txt.rb"
+    data = open(filename, "a+")
+    data.write("#{@dbUpdate[0]} = Supplier.new(\"#{@dbUpdate[0]}\", \"#{@dbUpdate[1]}\",#{@dbUpdate[2]}, \"#{@dbUpdate[3]}\", \"#{@dbUpdate[4]}\", #{@dbUpdate[5]})\n")
+    data.rewind
+    data.read
+    data.close
+  end
+  require './food.txt.rb'
+  def display
+    rows=[]
+    table =[]
+    Supplier.all.each do |database|
+      rows << [database.name,database.food,database.quantity]
+      table = Terminal::Table.new :title => "Food Connect",:headings => ['Supplier','food','quantity(KGS)'],:rows => rows
+    end
+    puts table
+  end
 end
 
+suppliers = Supplier.new("","","","","","")
+suppliers.supplierdetails
+suppliers.display
+####change account settings in gmail- go to my account ->sign-in and security ->
+#connected apps and sites -> Allow less secure apps turned on
+
+options = { :address              => "smtp.gmail.com",
+            :port                 => 587,
+            :domain               => '115-64-21-14.static.tpgi.com.au',
+            :user_name            => "nandini@coderfactory.com",
+            :password             => "nandusuchi3",
+            :authentication       => 'login',
+            :enable_starttls_auto => true  }
+
+
+Mail.defaults do
+  delivery_method :smtp, options
 end
 
-class Organization
-  def initialize;end
+Mail.deliver do
+    to 'nandini@coderfactory.com'
+    from 'nandini.r.nayak@gmail.com'
+    subject 'testing sendmail'
+    body 'Find attached the food list and pick up time'
+    add_file  "./food.txt"
 end
-
-
-dominos = Supplier.new("nil","nil","","","","")
-dominos.supplierdetails

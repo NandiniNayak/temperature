@@ -1,1 +1,1 @@
-gre
+greBurgerKing = Supplier.new("BurgerKing", "burger",20, "25 fake st", "45667", 14)
